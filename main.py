@@ -1,9 +1,16 @@
-from fileReader import loadDataPCBs, loadDataChromosomes
-from PCB import PCB, Connection, Point
-from generatePopulation import generatePopulation
+from fileReader import loadDataPCBs
+from PCB import PCB, Connection
+from generatePopulation import generatePopulationForPlate
 
-plates = loadDataChromosomes()
+POPULATION_NUMBER = 5
+
+plates = loadDataPCBs()
 plate6x6 = plates[0]
 
-population = generatePopulation(plate6x6)
+population = generatePopulationForPlate(plate6x6, POPULATION_NUMBER)
+
+print('========== POPULATION ============')
+
+print(population)
+
 

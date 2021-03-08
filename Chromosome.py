@@ -3,23 +3,24 @@ class Chromosome:
         self.paths = paths
 
     def __str__(self):
-        return f'Path: {self.paths}, Width: {self.width}, Height: {self.height}'
+        return f'Path: {self.paths} \n'
 
     def __repr__(self):
-        return f'Path: {self.paths}, Width: {self.width}, Height: {self.height}'
+        return f'Path: {self.paths} \n'
 
 class Path:
     segments = []
 
-    def __init__(self, start, end):
+    def __init__(self, start, end, segments):
         self.start = start
         self.end = end
+        self.segments = segments
 
     def __str__(self):
-        return f'Path start: {self.start}, end: {self.end}, segments: {self.segments}'
+        return f'Path start: {self.start}, end: {self.end}, \n segments: {self.segments} \n'
     
     def __repr__(self):
-        return f'Path start: {self.start}, end: {self.end}, segments: {self.segments}'
+        return f'Path start: {self.start}, end: {self.end}, \n segments: {self.segments} \n'
 
     
 class Segment:
