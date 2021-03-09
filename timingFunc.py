@@ -1,3 +1,5 @@
+import time
+
 def timing(f):
     def wrap(*args, **kwargs):
         time1 = time.time()

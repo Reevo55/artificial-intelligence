@@ -3,15 +3,14 @@ from PCB import PCB, Connection
 from generatePopulation import generatePopulationForPlate, generateIndividual
 from evaluate import *
 from Chromosome import *
-import time
 from timingFunc import timing
-
+from visualisation import *
 
 POPULATION_NUMBER = 5
-RANDOM_METHOD_ITERATIONS = 100000
+RANDOM_METHOD_ITERATIONS = 10000
 
 plates = loadDataPCBs()
-plate6x6 = plates[0]
+plate = plates[4]
 
 @timing
 def randomMethod(plate, iterations):
@@ -32,6 +31,13 @@ def randomMethod(plate, iterations):
     print('====================================================')
     return bestIndividual
 
-bestIndividual = randomMethod(plate6x6, RANDOM_METHOD_ITERATIONS)
+bestIndividual = randomMethod(plate, RANDOM_METHOD_ITERATIONS)
 print('Best individual: ')
 print(bestIndividual)
+
+printSums(bestIndividual, plate)
+
+arrOfPoints = getPointsFromSegments(bestIndividual, plate)
+
+draw_plots(getPointsFromSegments(bestIndividual, plate), (plate.width, plate.height))
+
