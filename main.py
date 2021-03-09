@@ -8,10 +8,10 @@ from timingFunc import timing
 
 
 POPULATION_NUMBER = 5
-RANDOM_METHOD_ITERATIONS = 100000
+RANDOM_METHOD_ITERATIONS = 100
 
 plates = loadDataPCBs()
-plate6x6 = plates[0]
+plate = plates[3]
 
 @timing
 def randomMethod(plate, iterations):
@@ -35,3 +35,10 @@ def randomMethod(plate, iterations):
 bestIndividual = randomMethod(plate6x6, RANDOM_METHOD_ITERATIONS)
 print('Best individual: ')
 print(bestIndividual)
+
+printSums(bestIndividual, plate)
+
+arrOfPoints = getPointsFromSegments(bestIndividual, plate)
+
+draw_plots(getPointsFromSegments(bestIndividual, plate), (plate.height, plate.width))
+

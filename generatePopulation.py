@@ -1,8 +1,8 @@
 from Chromosome import *
 import random
 
-RANDOMIZER_SEED = 0.4
-LENGTH_RANDOM_MAX = 2
+RANDOMIZER_SEED = 0.8
+LENGTH_RANDOM_MAX = 4
 
 def generateIndividual(plate):
     paths = []
