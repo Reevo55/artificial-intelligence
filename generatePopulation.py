@@ -1,13 +1,28 @@
 from Chromosome import *
 import random
 
-RANDOMIZER_SEED = 0.5
-LENGTH_RANDOM_MAX = 3
+RANDOMIZER_SEED = 0.4
+LENGTH_RANDOM_MAX = 2
+
+def generateIndividual(plate):
+    paths = []
+
+    for connection in plate.connections:
+        start = connection.start
+        end = connection.end
+
+        segments = createLutePath(start, end)
+
+        path = Path(start, end, segments)
+        paths.append(path)
+
+    individual = Chromosome(paths)
+    return individual
 
 def checkOpposite(direction_1, direction_2):
-    if direction_1 == 'right' and direction_2 == 'left':
+    if (direction_1 == 'right' and direction_2 == 'left') or (direction_1 == 'left' and direction_2 == 'right'):
         return True
-    if direction_1 == 'up' and direction_2 == 'down':
+    if (direction_1 == 'up' and direction_2 == 'down') or (direction_1 == 'down' and direction_2 == 'up'):
         return True
     
     return False
