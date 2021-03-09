@@ -13,17 +13,11 @@ def loadDataPCBs():
     data = []
 
     for file in filesToRead:
-        print("\n\n\n")
-        print("Reading file " + file)
-        print("=====================")
-
         f = open(dirPath + file, "r")
         dimensions = f.readline();
-        print("Dimensions: " + dimensions)
         
         width = int(dimensions.split(";")[0])
         height = int(dimensions.split(";")[1])
-        print("Width: " + str(width) + ", height: " + str(height))
 
         connectionsArr = [];
         for line in f.readlines():
@@ -34,7 +28,7 @@ def loadDataPCBs():
 
             connection = Connection(start, end)
             connectionsArr.append(connection)
-        print(connectionsArr)
+
         data.append(PCB(width, height, connectionsArr))
 
     return data

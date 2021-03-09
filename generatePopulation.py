@@ -28,9 +28,6 @@ def checkOpposite(direction_1, direction_2):
     return False
 
 def generatePopulationForPlate(plate, populationNumber):
-    print("Generating population")
-    print(plate)
-
     population = []
 
     for i in range(0, populationNumber):
@@ -53,9 +50,6 @@ def generatePopulationForPlate(plate, populationNumber):
     
 
 def createLutePath(start, end):
-    print("Creating Lute path")
-    print(f'Start {start}, end {end}')
-
     currPosition = Point(start.x, start.y)
     segments = []
 
@@ -125,10 +119,6 @@ def createLutePath(start, end):
                 segment = Segment(direction, abs(length))
                 segments.append(segment)
                 lastDirection = direction
-
-    print('Generating random path:')
-    print(segments)
-
     return segments
 
 

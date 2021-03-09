@@ -54,10 +54,6 @@ def sumOfIntersections(individual):
 
         pArr.extend(pointsArr)
 
-    print('Points:')
-    print(pArr)
-    print('Set of points:')
-    print(points)
     return intersections
 
 def sumOfOutsiders(individual, plate):
