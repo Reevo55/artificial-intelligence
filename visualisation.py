@@ -14,7 +14,7 @@ def split_list_of_points(point_list):
 def draw_plots(point_path_list, dimensions):
     y_list = []
     x_list = []
-    color_list = ['green', 'blue', 'red', 'yellow', 'black', 'magenta', 'cyan', '#4e0000', '#4e00fa']
+    color_list = ['green', 'blue', 'red', 'yellow', 'black', 'magenta', 'cyan', '#4e0000', '#4e00fa', '#8d0000', '#9b00fa', '#5c0000', '#ae00aa']
 
     for i, point_path in enumerate(point_path_list):
         x, y = split_list_of_points(point_path)
