@@ -27,24 +27,11 @@ def checkOpposite(direction_1, direction_2):
     
     return False
 
-def generatePopulationForPlate(plate, populationNumber):
+def generatePopulation(populationNumber, plate):
     population = []
 
     for i in range(0, populationNumber):
-        paths = []
-
-        for connection in plate.connections:
-            start = connection.start
-            end = connection.end
-
-            segments = createLutePath(start, end)
-
-            path = Path(start, end, segments)
-
-            paths.append(path)
-
-        individual = Chromosome(paths)
-        population.append(individual)
+        population.append(generateIndividual(plate))
     
     return population
     
