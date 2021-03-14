@@ -13,7 +13,7 @@ POPULATION_NUMBER = 5
 RANDOM_METHOD_ITERATIONS = 100000
 
 plates = loadDataPCBs()
-plate = plates[1]
+plate = plates[0]
 
 @timing
 def randomMethod(plate, iterations):

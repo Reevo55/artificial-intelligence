@@ -38,7 +38,7 @@ def draw_plots(point_path_list, dimensions):
     plt.xticks(range(x_min, x_max, 1))
 
     plt.grid(True)
-    plt.show(block=False)
+    plt.show()
 
 
 def get_max_elem_from_list_of_lists(list_of_lists):
