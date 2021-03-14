@@ -114,3 +114,30 @@ def evaluate(individual, plate):
     sum += W_INTERSECTION * sumOfI
 
     return sum
+
+def printSums(individual, plate):
+    sumOfS = sumOfSegments(individual)
+    sumOfL = sumOfLengths(individual)
+    sumOfO = sumOfOutsiders(individual, plate)
+    sumOfI = sumOfIntersections(individual)
+
+    print('Sum of segments: ' + str(sumOfS))
+    print('Sum of length: ' + str(sumOfL))
+    print('Sum of outsiders: ' + str(sumOfO))
+    print('Sum of intersections: ' + str(sumOfI))
+    
+def getPointsFromSegments(individual, plate):
+    pArr = []
+
+    for path in individual.paths:
+        currArr = []
+
+        currArr.append(path.start)
+        currPoint = Point(path.start.x, path.start.y)
+
+        segmentsPoints = segmentsToPoints(currPoint, path.segments)
+
+        currArr.extend(segmentsPoints)
+        pArr.append(currArr)
+
+    return pArr
