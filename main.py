@@ -5,7 +5,7 @@ from evaluate import *
 from selectors import roulette, tournament
 from Chromosome import *
 from timingFunc import timing
-from cross import onePointCrossover
+from cross import onePointCrossover, cross
 from visualisation import draw_plots
 import time
 
@@ -13,7 +13,7 @@ POPULATION_NUMBER = 5
 RANDOM_METHOD_ITERATIONS = 100000
 
 plates = loadDataPCBs()
-plate = plates[0]
+plate = plates[1]
 
 @timing
 def randomMethod(plate, iterations):
@@ -61,6 +61,8 @@ draw_plots(getPointsFromSegments(father, plate), (plate.height, plate.width))
 
 print('======================CROSS=======================')
 
-draw_plots(getPointsFromSegments(onePointCrossover(father, mother)[0], plate), (plate.height, plate.width))
-draw_plots(getPointsFromSegments(onePointCrossover(father, mother)[1], plate), (plate.height, plate.width))
+child_1, child_2 = cross(father, mother)
+
+draw_plots(getPointsFromSegments(child_1, plate), (plate.height, plate.width))
+draw_plots(getPointsFromSegments(child_2, plate), (plate.height, plate.width))
 
