@@ -3,7 +3,7 @@ import copy
 
 W_SEGMENTS = 1
 W_LENGTH = 2
-W_OUTSIDERS = 20
+W_OUTSIDERS = 50
 W_INTERSECTION = 15
 
 
@@ -126,7 +126,7 @@ def printSums(individual, plate):
     print('Sum of outsiders: ' + str(sumOfO))
     print('Sum of intersections: ' + str(sumOfI))
     
-def getPointsFromSegments(individual, plate):
+def getPointsFromSegments(individual):
     pArr = []
 
     for path in individual.paths:

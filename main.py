@@ -2,18 +2,27 @@ from fileReader import loadDataPCBs
 from PCB import PCB, Connection
 from generatePopulation import generatePopulation, generateIndividual
 from evaluate import *
-from selectors import roulette, tournament
 from Chromosome import *
 from timingFunc import timing
 from cross import onePointCrossover, cross
-from visualisation import draw_plots
+from mutation import *
+from evolutionaryAlgorithm import evolutionaryAlgorithm
+from selectorMethods import *
+
 import time
 
-POPULATION_NUMBER = 5
-RANDOM_METHOD_ITERATIONS = 100000
+POPULATION_NUMBER = 1024
+METHOD_ITERATIONS = 100
 
 plates = loadDataPCBs()
 plate = plates[1]
+
+bestIndividual = evolutionaryAlgorithm(plate, POPULATION_NUMBER, METHOD_ITERATIONS, 20)
+print("=================BEST INDIVIDUAL=========================")
+print(bestIndividual)
+print(evaluate(bestIndividual, plate))
+print(printSums(bestIndividual, plate))
+
 
 @timing
 def randomMethod(plate, iterations):
@@ -42,27 +51,21 @@ def randomMethod(plate, iterations):
 
 # arrOfPoints = getPointsFromSegments(bestIndividual, plate)
 
-# draw_plots(getPointsFromSegments(bestIndividual, plate), (plate.height, plate.width))
 
 # GENERATE POPULATION
 
-population = generatePopulation(POPULATION_NUMBER, plate)
+# population = generatePopulation(POPULATION_NUMBER, plate)
 
-print('======================MOTHER ROULETTE================')
-mother = roulette(population, plate)
-print(mother)
+# print('======================MOTHER ROULETTE================')
+# mother = roulette(population, plate)
+# print(mother)
 
-print('=====================FATHER TOURNAMENT===========================')
-father = tournament(population, plate)
-print(father)
+# print('=====================FATHER TOURNAMENT===========================')
+# father = tournament(population, plate)
+# print(father)
 
-draw_plots(getPointsFromSegments(mother, plate), (plate.height, plate.width))
-draw_plots(getPointsFromSegments(father, plate), (plate.height, plate.width))
+# mutation(mother)
 
-print('======================CROSS=======================')
 
-child_1, child_2 = cross(father, mother)
 
-draw_plots(getPointsFromSegments(child_1, plate), (plate.height, plate.width))
-draw_plots(getPointsFromSegments(child_2, plate), (plate.height, plate.width))
 

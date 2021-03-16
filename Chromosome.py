@@ -14,6 +14,9 @@ class Chromosome:
     
     def __ne__(self, other):
         return (not self.__eq__(other))
+    
+    def __hash__(self):
+        return hash(self.paths)
 
 class Path:
     segments = []
@@ -35,6 +38,9 @@ class Path:
     
     def __ne__(self, other):
         return (not self.__eq__(other))
+    
+    def __hash__(self):
+        return hash(self.segments)
 
 class Segment:
     direction = ''
@@ -56,6 +62,9 @@ class Segment:
     
     def __ne__(self, other):
         return (not self.__eq__(other))
+    
+    def __hash__(self):
+        return hash((self.direction, self.length))
 
 class Direction: 
     def __init__(self, direction):
@@ -75,6 +84,8 @@ class Direction:
     
     def __ne__(self, other):
         return (not self.__eq__(other))
+    def __hash__(self):
+        return hash(self.direction)
 
 class Point:
     def __init__(self, x, y):

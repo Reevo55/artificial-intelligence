@@ -10,7 +10,6 @@ def onePointCrossover(mother, father, cross_point):
     if cross_point >= len(mother.paths) or cross_point < 0: 
         raise ValueError("Cross_point must be smaller then path length and bigger then zero.")
 
-    print("Cross point: " + str(cross_point))
     child_one_path = []
     child_two_path = []
 

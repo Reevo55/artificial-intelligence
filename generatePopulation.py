@@ -1,5 +1,6 @@
 from Chromosome import *
 import random
+import copy
 
 RANDOMIZER_SEED = 0.4
 LENGTH_RANDOM_MAX = 2
@@ -109,7 +110,66 @@ def createLutePath(start, end):
     return segments
 
 
+def connectTwoPoints(start, end):
+    currPosition = Point(start.x, start.y)
+    segments = []
 
+    lastDirection = ''
+
+    while not (currPosition.x == end.x and currPosition.y == end.y):
+        if currPosition.x != end.x:
+            diffrence = currPosition.x - end.x
+            length = abs(diffrence)
+
+            if diffrence < 0 :
+                direction = 'right'
+            else:
+                length = -1 * length
+                direction = 'left'
+
+            if not checkOpposite(lastDirection, direction):
+                currPosition.x = currPosition.x + length
+
+                segment = Segment(direction, abs(length))
+                segments.append(segment)
+                lastDirection = direction
+
+        if currPosition.y != end.y:
+            diffrence = currPosition.y - end.y
+            length = abs(diffrence)
+
+            if diffrence < 0 :
+                direction = 'up'
+            else:
+                length = -1 * length
+                direction = 'down'
+
+            if not checkOpposite(lastDirection, direction):
+                currPosition.y = currPosition.y + length
+
+                segment = Segment(direction, abs(length))
+                segments.append(segment)
+                lastDirection = direction
+    return segments
+
+def flattenSegments(segments):
+    flattenSegments = []
+    curr = segments[0]
+    added = False
+
+    for segm in segments[1:]:
+        if curr.direction == segm.direction:
+            curr.length += segm.length
+            added = False
+        else:
+            flattenSegments.append(copy.deepcopy(curr))
+            curr = segm
+            added = True
+
+    if not added:
+        flattenSegments.append(copy.deepcopy(curr))
+
+    return flattenSegments
 
 
 
