@@ -1,24 +1,26 @@
 from Chromosome import *    
 import copy
 
-W_SEGMENTS = 1
-W_LENGTH = 2
-W_OUTSIDERS = 20
-W_INTERSECTION = 15
+W_SEGMENTS = 5
+W_LENGTH = 10
+W_OUTSIDERS = 50
+W_INTERSECTION = 30
 
-
-
-def sumOfSegments(individual):
-    sum = 0
+def sumOfSegmentsAndLength(individual):
+    sumSeg = 0
+    sumLen = 0
     lastDirection = ''
 
     for path in individual.paths:
         for segment in path.segments:
+            sumLen += segment.length
             if segment.direction != lastDirection:
-                sum += 1
+                sumSeg += 1
                 lastDirection = segment.direction
+                
+
     
-    return sum
+    return sumSeg, sumLen
 
 def sumOfLengths(individual):
     sum = 0
@@ -102,10 +104,8 @@ def lengthToPoints(currPoint, length, direction):
     return points
 
 def evaluate(individual, plate):
-    sumOfS = sumOfSegments(individual)
-    sumOfL = sumOfLengths(individual)
-    sumOfO = sumOfOutsiders(individual, plate)
-    sumOfI = sumOfIntersections(individual)
+    sumOfS, sumOfL = sumOfSegmentsAndLength(individual)
+    sumOfI, sumOfO = sumOfIntersectionsAndOutsiders(individual, plate)
 
     sum = 0
     sum += W_SEGMENTS * sumOfS
@@ -116,17 +116,15 @@ def evaluate(individual, plate):
     return sum
 
 def printSums(individual, plate):
-    sumOfS = sumOfSegments(individual)
-    sumOfL = sumOfLengths(individual)
-    sumOfO = sumOfOutsiders(individual, plate)
-    sumOfI = sumOfIntersections(individual)
+    sumOfS, sumOfL = sumOfSegmentsAndLength(individual)
+    sumOfI, sumOfO = sumOfIntersectionsAndOutsiders(individual, plate)
 
     print('Sum of segments: ' + str(sumOfS))
     print('Sum of length: ' + str(sumOfL))
     print('Sum of outsiders: ' + str(sumOfO))
     print('Sum of intersections: ' + str(sumOfI))
     
-def getPointsFromSegments(individual, plate):
+def getPointsFromSegments(individual):
     pArr = []
 
     for path in individual.paths:
@@ -141,3 +139,37 @@ def getPointsFromSegments(individual, plate):
         pArr.append(currArr)
 
     return pArr
+
+def sumOfIntersectionsAndOutsiders(individual, plate):
+    intersections = 0
+    points = set()
+    pArr = []
+
+    for path in individual.paths:
+        if path.start in points:
+            intersections += 1
+        
+        points.add(path.start)
+        pArr.append(path.start)
+        currPoint = Point(path.start.x, path.start.y)
+
+        pointsArr = []
+        segmentsPoints = segmentsToPoints(currPoint, path.segments)
+        pointsArr.extend(segmentsPoints)
+        
+        for point in pointsArr:
+            if point in points:
+                intersections += 1
+
+            points.add(point)
+
+        pArr.extend(pointsArr)
+
+    sumOfOutsiders = 0
+    for point in pointsArr:
+        if point.x < 0 or point.x >= plate.width:
+            sumOfOutsiders += 1
+        if point.y < 0 or point.y >= plate.height:
+            sumOfOutsiders += 1
+
+    return intersections, sumOfOutsiders

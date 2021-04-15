@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 
+# Credit to Piotr Bobeł for visualisation
+
 def split_list_of_points(point_list):
     x = []
     y = []
@@ -21,8 +23,7 @@ def draw_plots(point_path_list, dimensions):
         y_list.append(y)
         x_list.append(x)
 
-        # TODO fix this line
-        plt.scatter(x, y, c=color_list[i])   # this line may cause an error
+        plt.scatter(x, y, c=color_list[i])
 
     y_max, x_max = dimensions
 

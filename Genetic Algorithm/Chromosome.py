@@ -8,6 +8,16 @@ class Chromosome:
     def __repr__(self):
         return f'Path: {self.paths} \n'
 
+    def __eq__(self, other):
+        if not isinstance(other, type(self)): return NotImplemented
+        return self.paths == other.paths
+    
+    def __ne__(self, other):
+        return (not self.__eq__(other))
+    
+    def __hash__(self):
+        return hash(frozenset(self.paths))
+
 class Path:
     segments = []
 
@@ -21,8 +31,17 @@ class Path:
     
     def __repr__(self):
         return f'Path start: {self.start}, end: {self.end}, \n segments: {self.segments} \n'
-
     
+    def __eq__(self, other):
+        if not isinstance(other, type(self)): return NotImplemented
+        return self.segments == other.segments
+    
+    def __ne__(self, other):
+        return (not self.__eq__(other))
+    
+    def __hash__(self):
+        return hash(frozenset(self.segments))
+
 class Segment:
     direction = ''
     length = ''
@@ -37,6 +56,16 @@ class Segment:
     def __repr__(self):
         return f'Segment direction: {self.direction}, length: {self.length}'
 
+    def __eq__(self, other):
+        if not isinstance(other, type(self)): return NotImplemented
+        return self.direction == other.direction and self.length == other.length
+    
+    def __ne__(self, other):
+        return (not self.__eq__(other))
+    
+    def __hash__(self):
+        return hash((self.direction, self.length))
+
 class Direction: 
     def __init__(self, direction):
         if direction == 'left' or direction == 'right' or direction == 'up' or direction == 'down':
@@ -48,6 +77,16 @@ class Direction:
         return f'{self.direction}'
     def __repr__(self):
         return f'{self.direction}'
+
+    def __eq__(self, other):
+        if not isinstance(other, type(self)): return NotImplemented
+        return self.direction == other.direction
+    
+    def __ne__(self, other):
+        return (not self.__eq__(other))
+
+    def __hash__(self):
+        return hash(self.direction)
 
 class Point:
     def __init__(self, x, y):
