@@ -1,64 +1,58 @@
 from abc import ABC, abstractmethod
 from Variable import Variable
 from Constraints import *
+from ValueChoser import *
+from VariableChoser import *
+import copy
 
 
 class Problem(ABC):
     solutions = []
     variables = []
     constraints = []
+    set_variables = 0
+    variable_choser = None
+    value_choser = None
 
-    @abstractmethod
     def check_constraints(self, variable, value):
-        pass
+        previous_value = variable.value
+        variable.value = value
+
+        for constraint in self.constraints:
+            if not constraint.check_constraint():
+                variable.value = previous_value
+                return False
+
+        variable.value = previous_value
+
+        return True
 
     @abstractmethod
     def is_solved(self):
         pass
 
-    @abstractmethod
     def set_variable(self, variable, value):
-        pass
+        variable.value = value
+        self.set_variables += 1
 
-    @abstractmethod
     def reset_variable(self, variable):
-        pass
-
-    @abstractmethod
-    def get_first_variable(self):
-        pass
-
-    @abstractmethod
-    def get_next_variable(self):
-        pass
+        variable.reset_value()
+        self.set_variables -= 1
 
     def save_solution(self):
-        solution = []
-        for v in self.variables:
-            solution.append(v)
+        self.solutions.append(copy.deepcopy(self.variables))
 
-        if self.check_duplicate(solution):
-            return False
+    def print_solutions(self):
+        for solution in self.solutions:
+            print("SOLUTION")
+            for variable in solution:
+                print(variable)
 
-        self.solutions.append(solution)
-        return True
+    def get_next_value(self, variable, used_values):
+        return self.value_choser.get_next_value(variable, self.constraints, used_values)
 
-    def check_duplicate(self, solution):
-        for s in self.solutions:
-            is_duplicate = True
-            for i in range(len(s)):
-                if solution[i].name != s[i].name and solution[i].value != s[i].value:
-                    is_duplicate = False
-                    break
+    def get_next_variable(self):
+        return self.variable_choser.get_next_variable(self.variables)
 
-            if is_duplicate:
-                return True
-
-        return False
-
-    def print(self):
-        print("===============SOLVED=================")
-        for s in self.solutions:
-            print("Solution: ")
-
-            print(s)
+    def get_first_variable(self):
+        return self.variables[0]

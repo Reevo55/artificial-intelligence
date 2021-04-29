@@ -10,19 +10,38 @@ class MapProblem(Problem):
     domain = []
     points = []
     edges = []
+    points = []
 
-    def __init__(self, x_size, y_size, variable_length, domain_length):
+    def __init__(
+        self,
+        x_size,
+        y_size,
+        variable_length,
+        domain_length,
+        variable_choser,
+        value_choser,
+    ):
+        self.solutions = []
+        self.variables = []
+        self.constraints = []
+        self.points = []
+        self.domain = []
+        self.edges = []
+        self.set_variables = 0
+        self.variable_choser = None
+        self.value_choser = None
         self.variable_length = variable_length
         self.domain_length = domain_length
         self.set_variables = 0
         self.x_size = x_size
         self.y_size = y_size
+        self.variable_choser = variable_choser
+        self.value_choser = value_choser
 
         for i in range(domain_length):
             self.domain.append(i)
 
         self.generate_map_problem()
-        self.print_map()
 
     def generate_map_problem(self):
         self.create_points(self.variable_length)
@@ -36,8 +55,13 @@ class MapProblem(Problem):
 
             if not self.check_point_exists(created_point):
                 self.points.append(created_point)
-                self.variables.append(Variable(created_point.__str__(), self.domain))
+                self.variables.append(
+                    Variable(self.create_var_name(created_point), self.domain)
+                )
                 variable_length -= 1
+
+    def create_var_name(self, point):
+        return "(" + str(point.x) + ", " + str(point.y) + ")"
 
     def create_edges(self):
         while True:
@@ -62,8 +86,8 @@ class MapProblem(Problem):
 
     def create_edge(self, point_1, point_2):
         self.edges.append(Edge(point_1, point_2))
-        variable_1 = self.find_variable_by_name(point_1.__str__())
-        variable_2 = self.find_variable_by_name(point_2.__str__())
+        variable_1 = self.find_variable_by_name(self.create_var_name(point_1))
+        variable_2 = self.find_variable_by_name(self.create_var_name(point_2))
         self.constraints.append(ValuesConstraintNotEqual(variable_1, variable_2))
 
     def find_variable_by_name(self, name):
@@ -79,16 +103,7 @@ class MapProblem(Problem):
         return False
 
     def is_solved(self):
-        return self.variables[-1].has_value()
-
-    def get_next_variable(self):
-        if self.set_variables < len(self.variables) - 1:
-            self.set_variables += 1
-
-        return self.variables[self.set_variables]
-
-    def get_first_variable(self):
-        return self.variables[0]
+        return len(self.variables) == self.set_variables
 
     def print_map(self):
         print("=====================================")
@@ -190,26 +205,6 @@ class MapProblem(Problem):
             return True
 
         return False
-
-    def check_constraints(self, variable, value):
-        previous_value = variable.value
-        variable.value = value
-
-        for constraint in self.constraints:
-            if not constraint.check_constraint():
-                variable.value = previous_value
-                return False
-
-        variable.value = previous_value
-
-        return True
-
-    def set_variable(self, variable, value):
-        variable.value = value
-
-    def reset_variable(self, variable):
-        variable.reset_value()
-        self.set_variables -= 1
 
 
 class Point:

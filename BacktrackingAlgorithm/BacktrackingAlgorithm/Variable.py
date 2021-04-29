@@ -12,5 +12,25 @@ class Variable:
     def reset_value(self):
         self.value = self.DEFAULT_VALUE
 
+    def has_value_domain(self):
+        return len(self.domain) != 0
+
+    def remove_from_domain(self, domain_values):
+        if len(self.domain) == 0:
+            return
+
+        filtered_domain = []
+
+        for d in self.domain:
+            for v in domain_values:
+                if d != v:
+                    filtered_domain.append(d)
+                    break
+
+        self.domain = filtered_domain
+
     def __repr__(self):
         return f"Name: {self.name}, Domain: {self.domain}, Value: {self.value} \n"
+
+    def __eq__(self, other):
+        return self.name == other.name
