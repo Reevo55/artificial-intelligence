@@ -1,28 +1,61 @@
-import Evaluator from "./Evaluator.js";
-
-export default class MinMax extends Evaluator {
+export default class MinMax {
   constructor(depth) {
     this.depth = depth;
   }
 
-  evaluate(gameState, player) {
-    best = this.evalRec(gameState, this.depth, player);
+  evalBestMove(position, maximizingPlayer) {
+    let copy = _.cloneDeep(position);
+    let move = this.minmax(copy, this.depth, maximizingPlayer)[0];
+    return move;
   }
 
-  evalRec(gameState, depth, player) {
-    if (depth === 0) return 0, gameState.evaluate();
-
-    if (gameState.hasEnded()) {
-      return 0, gameState.evaluate();
+  minmax(position, depth, maximizingPlayer) {
+    if (depth == 0 || position.hasEnded()) {
+      let ev = position.evaluate();
+      return [0, ev];
     }
 
-    if (player) {
-      let min = Number.MAX_SAFE_INTEGER;
-      let min_index = -1;
+    let move;
+    let evaluation;
 
-      for (let i = 0; i < gameState.board[gameState.secondPlayerMankala]; i++) {
-        let gameCopy = { ...gameState };
+    if (maximizingPlayer) {
+      let maxEval = Number.MIN_SAFE_INTEGER;
+      let max_move = 0;
+
+      const moves = position.allPlayerMoves(true);
+
+      for (let child of moves) {
+        let childPosition = _.cloneDeep(position);
+        childPosition.move(child);
+
+        [move, evaluation] = this.minmax(childPosition, depth - 1, false);
+
+        if (evaluation >= maxEval) {
+          maxEval = evaluation;
+          max_move = child;
+        }
       }
+
+      return [max_move, maxEval];
+    } else {
+      let minEval = Number.MAX_SAFE_INTEGER;
+      let min_move = 8;
+
+      const moves = position.allPlayerMoves(false);
+
+      for (let child of moves) {
+        let childPosition = _.cloneDeep(position);
+        childPosition.move(child);
+
+        [move, evaluation] = this.minmax(childPosition, depth - 1, true);
+
+        if (evaluation <= minEval) {
+          minEval = evaluation;
+          min_move = child;
+        }
+      }
+
+      return [min_move, minEval];
     }
   }
 }

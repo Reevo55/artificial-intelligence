@@ -14,7 +14,6 @@ export default class GameManager {
     this.game = game;
 
     this.registerListeners(this.player1);
-    this.registerListeners(this.player2);
 
     this.updateTurn();
 
@@ -48,7 +47,15 @@ export default class GameManager {
         let hole = e.target.classList[1].substr();
         hole = parseInt(hole.replace(/\D/g, ""));
         if (this.game.checkSameSide(hole, this.whichTurn)) {
-          this.makeMove(hole, player.whichPlayer);
+          if (this.makeMove(hole, true)) {
+            debugger;
+            this.updateUI();
+
+            if (this.game.playerMove === c.PLAYER_TWO) this.computerMove();
+            this.updateTurn();
+          } else {
+            alert("Wrong move");
+          }
         } else {
           console.log("Not your turn mate");
         }
@@ -57,9 +64,13 @@ export default class GameManager {
   }
 
   makeMove(hole, player) {
-    this.game.move(hole, player);
+    if (!this.game.move(hole, player)) {
+      return false;
+    }
+    this.game.isFinished();
     this.updateUI();
     this.updateTurn();
+    return true;
   }
 
   updateUI() {
@@ -72,15 +83,15 @@ export default class GameManager {
     }
   }
 
-  playComputers() {
+  playWithComputer() {
+    alert("Starting the game...");
+
     while (!this.game.hasEnded()) {
       this.game.show();
       let hole;
 
-      if (c.PLAYER_ONE === this.game.whichTurn) {
-        hole = player1.makeMove();
-      } else if (c.PLAYER_TWO === this.game.whichTurn) {
-        hole = player2.makeMove();
+      if (c.PLAYER_TWO === this.game.whichTurn) {
+        hole = player2.makeMove({ ...this.game });
       }
 
       if (!this.game.move(hole)) {
@@ -92,5 +103,17 @@ export default class GameManager {
     }
   }
 
+  computerMove() {
+    let hole = parseInt(this.player2.makeMove(this.game));
+    setTimeout(() => {
+      alert(`Computer moved on ${hole}`);
+      this.updateUI();
+    }, 100);
+    this.game.move(hole);
+    this.game.isFinished();
+    if (this.game.playerMove === false) {
+      this.computerMove();
+    }
+  }
   playHuman() {}
 }
