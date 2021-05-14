@@ -115,5 +115,36 @@ export default class GameManager {
       this.computerMove();
     }
   }
+  computerVScomputer(randomMove = true) {
+    if (randomMove) {
+      let randMove = getRandomInt(0, this.game.firstPlayerMankala);
+      this.game.move(randMove);
+      console.log("Random move");
+      console.log(randMove);
+    }
+
+    while (!this.game.hasEnded()) {
+      this.game.show();
+      let hole = 0;
+
+      if (c.PLAYER_ONE === this.game.playerMove) {
+        hole = parseInt(this.player1.makeMove(this.game));
+        console.log(`Player 1, move ${hole}`);
+      } else {
+        hole = parseInt(this.player2.makeMove(this.game));
+        console.log(`Player 2, move ${hole}`);
+      }
+
+      this.game.move(hole);
+      this.updateUI();
+    }
+  }
+
   playHuman() {}
+}
+
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min;
 }

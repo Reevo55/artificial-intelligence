@@ -28,7 +28,11 @@ export default class MinMax {
         let childPosition = _.cloneDeep(position);
         childPosition.move(child);
 
-        [move, evaluation] = this.minmax(childPosition, depth - 1, false);
+        [move, evaluation] = this.minmax(
+          childPosition,
+          depth - 1,
+          childPosition.playerMove
+        );
 
         if (evaluation >= maxEval) {
           maxEval = evaluation;
@@ -47,7 +51,11 @@ export default class MinMax {
         let childPosition = _.cloneDeep(position);
         childPosition.move(child);
 
-        [move, evaluation] = this.minmax(childPosition, depth - 1, true);
+        [move, evaluation] = this.minmax(
+          childPosition,
+          depth - 1,
+          childPosition.playerMove
+        );
 
         if (evaluation <= minEval) {
           minEval = evaluation;
